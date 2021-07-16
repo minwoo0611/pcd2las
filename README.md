@@ -16,8 +16,8 @@ Use the following commands to download and compile the package.
 ```
 mkdir catkin_ws
 cd ~/catkin_ws
-git clone https://github.com/minwoo0611/pcd_to_las
-cd pcd_to_las/
+git clone https://github.com/minwoo0611/pcd2las
+cd pcd2las/
 mkdir build
 cd build
 cmake ..
@@ -28,6 +28,6 @@ make
 
 Run the file in build folder:
 ```
-./las_to_pcd
+./pcd2las
 ```
 
