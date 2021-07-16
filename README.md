@@ -1,115 +1,33 @@
 # pcd_to_las
 
-**pcd_to_las is tool to change extension of file from pcd to las or from las to pcd. You have to set folder paths which the original file is in(path) where the converted file will be saved(save_path). All files with pcd(or las) extension in the folder are replaced with las(or pcd) extension. **
-
-## System architecture(Hardware, Software)
-
-<p align='center'>
-    <img src="./config/doc/hardware_setting.png" alt="drawing" width="800"/>
-</p>
-<p align='center'>
-    <img src="./config/doc/Hardware_calib.png" alt="drawing" width="400"/>
-    <img src="./config/doc/Structure.png" alt="drawing" width="400"/>
-</p>
-
-It uses the code of LIO-SAM, but there are two differences. 
-- In ImageProjection.cpp, give the point an ambient value (ambient is given to the curvature channel). 
-- Add nearest search using ambient in Optimization.cpp.(there are new parameters, ambientThreshold, numFirstNeighbor, numSecondNeighbor in params.yaml)
+**pcd_to_las is tools to change extension of file from pcd to las or from las to pcd. You have to set folder paths which the original file is in(path) where the converted file will be saved(save_path). All files with pcd(or las) extension in the folder are replaced with las(or pcd) extension. las_to_pcd is commented out, you just need to uncommented it to use it. **
 
 ## Dependency
 
-- [ROS](http://wiki.ros.org/ROS/Installation) (tested with Kinetic and Melodic)
+- [PCL](https://pointclouds.org/)
   ```
-  sudo apt-get install -y ros-kinetic-navigation
-  sudo apt-get install -y ros-kinetic-robot-localization
-  sudo apt-get install -y ros-kinetic-robot-state-publisher
+  sudo apt install libpcl-dev
   ```
-- [gtsam](https://github.com/borglab/gtsam/releases) (Georgia Tech Smoothing and Mapping library)
-  ```
-  wget -O ~/Downloads/gtsam.zip https://github.com/borglab/gtsam/archive/4.0.2.zip
-  cd ~/Downloads/ && unzip gtsam.zip -d ~/Downloads/
-  cd ~/Downloads/gtsam-4.0.2/
-  mkdir build && cd build
-  cmake -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF ..
-  sudo make install -j8
-  ```
-Also, for AI-LIO-SAM to work, your data needs to work well with LIO-SAM. We recommend that you test whether it works well with LIO-SAM first. (https://github.com/TixiaoShan/LIO-SAM)
 
 ## Install
 
 Use the following commands to download and compile the package.
 
 ```
-cd ~/catkin_ws/src
-git clone https://github.com/minwoo0611/AI_LIO
-cd ..
-catkin_make
+mkdir catkin_ws
+cd ~/catkin_ws
+git clone https://github.com/minwoo0611/pcd_to_las
+cd pcd_to_las/
+mkdir build
+cd build
+cmake ..
+make
 ```
 
-## Sample dataset images
-
-  * You can see the image with different ambient value(brown is low, green is high) and tree map from AI-LIO-SAM. Also, The surrounding environment is shown in the picture below.
-<p align='center'>
-    <img src="./config/doc/tree.png" alt="drawing" width="400"/>
-    <img src="./config/doc/tree_map.png" alt="drawing" width="800"/>
-    <img src="./config/doc/tree_seen.png" alt="drawing" width="800"/>
-</p>
-
-* It works in urban environments as well as unstructured environments, and performance may be good or bad depending on the situation. In the first picture, Seq 2, you can see that the mapped points match well with the real environment. In the case of the seoncd picture, it is the result of mapping the urban tunnel. Blue and red show the mapping results of LIO-SAM and AI-LIO-SAM, respectively, and if you look at the third picture, you can see that AI-LIO-SAM matches well with the real environment. In an object with a similar structure, the lidar odometry factor may not be accurate when searching for a location using only x, y, and z. However, accurate values ​​can be obtained if intensity and ambient are additionally used.
-<p align='center'>
-    <img src="./config/doc/Seq2.png" alt="drawing" width="800"/>
-    <img src="./config/doc/Sejong_tunnel_data_lio_ai_lio.png" alt="drawing" width="800"/>
-    <img src="./config/doc/Sejong_tunnel_data.png" alt="drawing" width="800"/>
-</p>
-
-* These images are results of my paper. more images can be seen in my paper(./config/doc/KRS-2021-17.pdf).
-<p align='center'>
-    <img src="./config/doc/result.png" alt="drawing" width="800"/>
-</p>
 ## Run the package
 
-1. Run the launch file:
+Run the file in build folder:
 ```
-roslaunch lio_sam run.launch
-```
-
-2. Play existing bag files:
-```
-rosbag play your-bag.bag -r 3
+./las_to_pcd
 ```
 
-## Service
-  - /lio_sam/save_map
-    - save map as a PCD file.
-      ``` bash
-        rosservice call [service] [resolution] [destination]
-      ```
-      - Example:
-      ``` bash
-        $ rosservice call /lio_sam/save_map 0.2 "/Downloads/LOAM/"
-      ```
-
-## Paper 
-
-Thank you for citing AI-LIO-SAM(./config/doc/KRS-2021-17.pdf) if you use any of this code. 
-
-
-```
-TODO
-```
-
-Part of the code is adapted from [LIO-SAM (IROS-2020)](https://github.com/TixiaoShan/LIO-SAM).
-```
-@inproceedings{legoloam2018shan,
-  title={LeGO-LOAM: Lightweight and Ground-Optimized Lidar Odometry and Mapping on Variable Terrain},
-  author={Shan, Tixiao and Englot, Brendan},
-  booktitle={IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
-  pages={4758-4765},
-  year={2018},
-  organization={IEEE}
-}
-```
-
-## Acknowledgement
-
-  - AI-LIO-SAM is based on LIO-SAM (T. Shan, B. Englot, D. Meyers, W. Wang, C. Ratti, and D. Rus. LIO-SAM: Tightly-coupled Lidar Inertial Odometry via Smoothing and Mapping).
