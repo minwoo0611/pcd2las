@@ -1,22 +1,7 @@
-#include <iostream>
 #include <pcl/io/pcd_io.h>
-#include <pcl/point_types.h>
-#include <pcl/PCLPointCloud2.h>
-#include <pcl/registration/transforms.h>
-
-#include<fstream>
 #include <iostream>
-#include <sstream>
-#include <istream>
-#include<string>
-#include<algorithm>
-#include <sys/io.h>
-#include <stdio.h>
-#include <dirent.h>
-#include <sys/types.h>
-#include <stdint.h>
 #include <liblas/liblas.hpp>
-#include <vector>
+
 
 using namespace std;
 
@@ -62,7 +47,7 @@ int
 main (int argc, char** argv)
 {
   //change pcd to las
-  
+  /*
   pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>) ;
   pcl::PCDReader reader;
   char* path = "/home/jmw0611/pcd_point/";
@@ -106,8 +91,8 @@ main (int argc, char** argv)
       writer.WritePoint(point);
     }
   }
-  
- /*
+  */
+ 
   // change las to pcd
   
   std::ifstream ifs;
@@ -160,7 +145,7 @@ main (int argc, char** argv)
     ifs.close();
   }
   
-*/
+
 
   
   return (0);
