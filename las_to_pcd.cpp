@@ -47,7 +47,7 @@ int
 main (int argc, char** argv)
 {
   //change pcd to las
-  /*
+  
   pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>) ;
   pcl::PCDReader reader;
   char* path = "/home/jmw0611/pcd_point/";
@@ -91,10 +91,10 @@ main (int argc, char** argv)
       writer.WritePoint(point);
     }
   }
-  */
+  
  
   // change las to pcd
-  
+  /*
   std::ifstream ifs;
   pcl::PointCloud<pcl::PointXYZI>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZI>);
   char* path = "/home/jmw0611/las_point/";
@@ -145,7 +145,7 @@ main (int argc, char** argv)
     ifs.close();
   }
   
-
+*/
 
   
   return (0);
